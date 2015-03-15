@@ -1,65 +1,81 @@
 ## Website Performance Optimization portfolio project
 
-Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
+Installation:
+    From the current directory, running grunt will create a production directory. Copy
+    this directory to your web server path.
 
-To get started, check out the repository, inspect the code,
+    To run grunt you will need to run npm install to install the node_modules used in the
+    Gruntfile.js.
 
-### Getting started
+Environment:
+  I used a local apache server and ngrok to access the server from the web to perform the
+  pagespeed tests.
 
-Some useful tips to help you get started:
+  I used server-configs-apache to set up gzip compression and caching. See Sites Used.
 
-1. Check out the repository
-1. To inspect the site on your phone, you can run a local server
+  I changed the file structure slightly creating dev and production directories under the
+  udportfolio directory.  The production directory contains the minified and compressed files.
+  I included them in the upload, but running grunt will perform all the optimization tasks
+  and create and populate the production directory.
 
-  ```bash
-  $> cd /path/to/your-project-folder
-  $> python -m SimpleHTTPServer 8080
-  ```
+Sites Used:
+  Udacity forms.  This is also where I discovered grunt.
 
-1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to make your local server accessible remotely.
+  The site I used to figure out how to set up and start using grunt.
+  https://www.erianna.com/using-grunt-to-minify-and-compress-assets
 
-  ``` bash
-  $> cd /path/to/your-project-folder
-  $> ngrok 8080
-  ```
+  npmjs.com - installed node.js and use npm to install grunt and grunt modules.
 
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
+  gruntjs.com - documentation and modules
 
-Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
+  The site I used to configure apache for gzip and caching:
+  https://github.com/h5bp/server-configs-apache
 
-### Optimization Tips and Tricks
-* [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
-* [Analyzing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp.html "analyzing crp")
-* [Optimizing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path.html "optimize the crp!")
-* [Avoiding Rendering Blocking CSS](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css.html "render blocking css")
-* [Optimizing JavaScript](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript.html "javascript")
-* [Measuring with Navigation Timing](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp.html "nav timing api"). We didn't cover the Navigation Timing API in the first two lessons but it's an incredibly useful tool for automated page profiling. I highly recommend reading.
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/eliminate-downloads.html">The fewer the downloads, the better</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer.html">Reduce the size of text</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization.html">Optimize images</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching.html">HTTP caching</a>
+  stackoverflow.com for general information
 
-### Customization with Bootstrap
-The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
 
-* <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
-* <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
+General Updates Made:
+  See Comments in files for more specific information.
+  All my comments begin with JB.
 
-### Sample Portfolios
+  Copied the font information from //fonts.googleapis.com/css?family=Open+Sans:400,700 and
+  put it into the css files where appropriate. This allowed the font to be cached and
+  and speeded up loading.
 
-Feeling uninspired by the portfolio? Here's a list of cool portfolios I found after a few minutes of Googling.
+  Used grunt to handle minimization, compressing, text replacement and to move to production
+  directory.  See Gruntfile.js for more information.
 
-* <a href="http://www.reddit.com/r/webdev/comments/280qkr/would_anybody_like_to_post_their_portfolio_site/">A great discussion about portfolios on reddit</a>
-* <a href="http://ianlunn.co.uk/">http://ianlunn.co.uk/</a>
-* <a href="http://www.adhamdannaway.com/portfolio">http://www.adhamdannaway.com/portfolio</a>
-* <a href="http://www.timboelaars.nl/">http://www.timboelaars.nl/</a>
-* <a href="http://futoryan.prosite.com/">http://futoryan.prosite.com/</a>
-* <a href="http://playonpixels.prosite.com/21591/projects">http://playonpixels.prosite.com/21591/projects</a>
-* <a href="http://colintrenter.prosite.com/">http://colintrenter.prosite.com/</a>
-* <a href="http://calebmorris.prosite.com/">http://calebmorris.prosite.com/</a>
-* <a href="http://www.cullywright.com/">http://www.cullywright.com/</a>
-* <a href="http://yourjustlucky.com/">http://yourjustlucky.com/</a>
-* <a href="http://nicoledominguez.com/portfolio/">http://nicoledominguez.com/portfolio/</a>
-* <a href="http://www.roxannecook.com/">http://www.roxannecook.com/</a>
-* <a href="http://www.84colors.com/portfolio.html">http://www.84colors.com/portfolio.html</a>
+  Minimized js, css and html files.
+
+  Compressed images.  Grunt imagemin had a problem minimizing pizzeria.jpg so I used
+  http://compressjpeg.com to compress it.  grunt copy is used to move this file to production
+
+Optimizations made in views/js/main.js
+  Function determineDx - moved the windowwidth calculation to the function changePizzaSizes
+  (the calling function) and added windowwidth as a paramenter.  This function is called
+  for each pizza.  Since we want the windowwidth of the same element for each pizza, we
+  only need to get it once.
+
+  Function changePizzaSizes - Finding DOM elements is expensive and since all pizzas are in
+  the same container element, we only need to find it once so I moved it out of the for loop.
+  The windowwidth calculation from determineDx is now in this function for the same reason.
+  The values for dx and newwidth also need to be calculated only once, so I moved those outside
+  of the loop.
+
+  Function updatePositions - For the same reasons as above, moved the DOM lookup for
+  document.body.scrollTop out of the loop and use it to calculate scrollTop only once.
+
+  Function addEventListener - moved document.querySelector("#movingPizzas1") out of for loop
+  and assigned to variable to save the DOM lookup. Using the variable for appendChild call.
+
+ Files Modified:
+  index.html
+  project-2048.html
+  project-mobile.html
+  project-webperf.html
+
+  css/style.css 
+  js/perfmatters.js
+
+  views/pizza.html
+  views/js/main.js
